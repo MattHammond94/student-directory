@@ -1,11 +1,9 @@
 @students = []
+@acceptable_cohorts = [:january, :february, :march, :april, :may, :june,
+                       :july, :august, :september, :october, :november,
+                       :december]
 
 def input_students
-  # An array of acceptable cohorts defined as a global variable to allow multiple use
-  $acceptable_cohorts = [:january, :february, :march, :april, :may, :june,
-                        :july, :august, :september, :october, :november,
-                        :december]
-  
   puts "Please enter the name of the students"
   puts "To finish, just hit return twice"
   
@@ -17,7 +15,7 @@ def input_students
     # This loop only allows users to input a month as a :cohort value 
     # This can also be edited for the other Keys in our hash if required
     cohort = gets.strip.to_sym
-    until ($acceptable_cohorts.select { |month| month == cohort }.empty?) == false do
+    until (@acceptable_cohorts.select { |month| month == cohort }.empty?) == false do
       puts "This cohort is invalid"
       cohort = gets.strip.to_sym
     end
@@ -67,7 +65,7 @@ def print_by_cohort
   end 
   
   @students.each do |hash| 
-    hash.map { |k, v| puts hash[:name].center(100) if $acceptable_cohorts[cohort.to_i - 1] == v }
+    hash.map { |k, v| puts hash[:name].center(100) if @acceptable_cohorts[cohort.to_i - 1] == v }
   end
 end
   
@@ -91,9 +89,10 @@ def print_menu
   puts "9. Exit"
 end
 
+# I have amended the print_students_list to print_by_cohort below to test the change worked successfully.
 def show_students
   print_header
-  print_students_list
+  print_by_cohort
   print_footer
 end
 
