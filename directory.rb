@@ -1,4 +1,5 @@
 def input_students
+  # An array of acceptable cohorts defined as a global variable to allow multiple use
   $acceptable_cohorts = [:january, :february, :march, :april, :may, :june,
                         :july, :august, :september, :october, :november,
                         :december]
@@ -10,8 +11,10 @@ def input_students
   name = gets.strip
   
   while !name.empty? do
+    # Added further statements to allow user to input multiple values to new keys in hash
     puts "Which cohort does #{name} belong to?"
-    
+    # This loop only allows users to input a month as a :cohort value 
+    # This can also be edited for the other Keys in our hash if required
     cohort = gets.strip.to_sym
     until ($acceptable_cohorts.select { |month| month == cohort }.empty?) == false do
       puts "This cohort is invalid"
@@ -37,11 +40,13 @@ def input_students
   students
 end
   
+# Center method added to outputs in header method  
 def print_header
   puts "The Students of Villains Academy".center(100)
   puts "-------------".center(100)
 end
 
+# Control flow added to print method to account for empty arrays
 def print(students)
   if students.empty? 
     puts "There are currrently no students at the Villains Academy".center(100)
@@ -52,12 +57,13 @@ def print(students)
   end
 end
 
+# Print cohort method added to puts all names within selected cohort
 def print_by_cohort(students)
   puts "select a cohort month from 1-12".center(100)
-  cohort = gets.chomp 
+  cohort = gets.strip
   while cohort.to_i < 1 || cohort.to_i > 12
     puts "invalid input".center(100)
-    cohort = gets.chomp
+    cohort = gets.strip
   end 
   
   students.each do |hash| 
@@ -65,6 +71,7 @@ def print_by_cohort(students)
   end
 end
   
+# Control flow added to footer method to control output  
 def print_footer(students)
   if students.count < 1
     puts "Our most evilest(MF the Super Villain) had better start recruiting because we have no students."
@@ -77,8 +84,9 @@ def print_footer(students)
   end
 end
 
+# Methods called
 students = input_students
 print_header
 print(students)
 print_footer(students)
-print_by_cohort(students)
+# print_by_cohort(students)
