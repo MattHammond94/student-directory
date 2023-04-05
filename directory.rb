@@ -1,17 +1,3 @@
-# students = [
-#   {name: "Dr. Hannibal Lecter", cohort: :november},
-#   {name: "Darth Vader", cohort: :november},
-#   {name: "Nurse Ratched", cohort: :november},
-#   {name: "Michael Corleone", cohort: :november},
-#   {name: "Alex DeLarge", cohort: :november},
-#   {name: "The Wicked Witch of the West", cohort: :november},
-#   {name: "Terminator", cohort: :november},
-#   {name: "Freddy Krueger", cohort: :november},
-#   {name: "The Joker", cohort: :november},
-#   {name: "Joffrey Baratheon", cohort: :november},
-#   {name: "Norman Bates", cohort: :november}
-#   ]
-
 def input_students
   puts "Please enter the name of the students"
   puts "To finish, just hit return twice"
@@ -20,8 +6,24 @@ def input_students
   name = gets.chomp
   
   while !name.empty? do
-    students << {name: name, cohort: :november}
-    puts "Now we have #{students.count} students"
+    puts "Which cohort does #{name} belong to?"
+    cohort = gets.chomp.to_sym
+    cohort = :november if cohort.empty?
+    puts "What is #{name}s favourite hobby?"
+    hobby = gets.chomp.to_sym
+    puts "Finally, which country is #{name} from?"
+    country = gets.chomp.to_sym
+    
+    
+    students << {name: name, cohort: cohort, hobby: hobby, cob: country}
+    student_count = "Now we have #{students.count} student"
+    
+      if students.count == 1
+        puts student_count
+      else   
+        puts student_count + "s"
+      end
+    puts "Add another student or hit enter to finish."
     name = gets.chomp
   end
   students
