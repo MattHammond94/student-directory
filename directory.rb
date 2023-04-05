@@ -1,4 +1,9 @@
 def input_students
+  acceptable_cohorts = [:january, :february, :march, :april, :may, :june,
+                        :july, :august, :september, :october, :november,
+                        :december]
+  
+  
   puts "Please enter the name of the students"
   puts "To finish, just hit return twice"
   
@@ -7,13 +12,17 @@ def input_students
   
   while !name.empty? do
     puts "Which cohort does #{name} belong to?"
+    
     cohort = gets.chomp.to_sym
-    cohort = :november if cohort.empty?
+    until (acceptable_cohorts.select { |month| month == cohort }.empty?) == false do
+      puts "This cohort is invalid"
+      cohort = gets.chomp.to_sym
+    end
+    
     puts "What is #{name}s favourite hobby?"
     hobby = gets.chomp.to_sym
     puts "Finally, which country is #{name} from?"
     country = gets.chomp.to_sym
-    
     
     students << {name: name, cohort: cohort, hobby: hobby, cob: country}
     student_count = "Now we have #{students.count} student"
