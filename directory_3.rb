@@ -50,7 +50,7 @@ def input_students
       puts "This cohort is invalid"
       cohort = STDIN.gets.chomp.to_sym
     end
-    @students << {name: name, cohort: cohort}
+    add_student(name, cohort)
     student_count = "Now we have #{@students.count} student"
       if @students.count == 1
         puts student_count
@@ -60,6 +60,11 @@ def input_students
     puts "Add another student or hit enter to finish."
     name = STDIN.gets.chomp
   end
+end
+
+# Add student method added 
+def add_student(name, cohort)
+  @students << {name: name, cohort: cohort}
 end
   
 def show_students
@@ -97,7 +102,7 @@ end
 
 # Saving our data to a file:
 def save_students
-  file = File.open("students.csv", "w")
+  file = File.open("students_2.csv", "w")
   
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
@@ -108,11 +113,11 @@ def save_students
 end
 
 # Loading the students from existing file
-def load_students(filename = "students.csv")
+def load_students(filename = "students_2.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym}
+    add_student(name, cohort.to_sym)
   end
   file.close
 end
