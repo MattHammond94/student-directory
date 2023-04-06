@@ -8,9 +8,8 @@
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students_2.csv"
-  puts "4. Load the list from students_2.csv"
-  puts "5. Select a file to load the list from"
+  puts "3. Save the list to selected file"
+  puts "4. Load a list of students from a selected file"
   puts "9. Exit"
 end
 
@@ -31,8 +30,6 @@ def process(selection)
       save_students
     when "4"
       load_students
-    when "5"
-      load_students_selection
     when "9"
       puts "Goodbye!"
       exit
@@ -121,31 +118,23 @@ def save_students
     csv_line = student_data.join(",")
     file.puts csv_line
   end
-  puts "Students have been saved to #{filename}"
+  puts "Students have been saved to{"
   file.close
 end
 
-# Added new method to take a selected file from user.
-# Can be editted with a Regex to ensure that user input always ends in some form of
-# extension however I have spent too long trying to implement this. 
-# For now works on the assumption a .csv file is stored within dir.
-def load_students_selection
-  puts "Type a filename ending with its file type extension (E.g: file.csv)"
-  filename = gets.chomp 
-  while filename.empty? || !filename.end_with?(".csv")
-    puts "Filename not acceptable, please re enter a filename"
-    filename = gets.chomp
-  end
-  load_students(filename)
-end
-
 # Both methods updated to ensure a default file is passed:
-def load_students(filename = "students_2.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-  name, cohort = line.chomp.split(",")
-    add_student(name, cohort.to_sym)
-  end
+def load_students
+  puts "Enter a filename ending with its file type extension (E.g: file.csv)"
+  filename = STDIN.gets.chomp 
+    while filename.empty? || !File.exist?(filename)
+      puts "Filename not acceptable, please re-enter a filename"
+      filename = STDIN.gets.chomp
+    end
+    file = File.open(filename, "r")
+      file.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      add_student(name, cohort.to_sym)
+    end
   puts "Successfully loaded #{@students.count} from #{filename}"
   file.close
 end
