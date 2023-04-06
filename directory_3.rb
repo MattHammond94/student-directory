@@ -39,7 +39,6 @@ def process(selection)
   end
 end
 
-# Refactored my input students method into 3 methods:
 def input_students
   puts "Please enter the name of the students"
   puts "To finish, just hit return twice"
@@ -72,7 +71,6 @@ def total_students
     end
 end
 
-# Add student method added 
 def add_student(name, cohort)
   @students << {name: name, cohort: cohort}
 end
@@ -110,7 +108,6 @@ def print_footer
   end
 end
 
-# Method added to define selected file
 def file_selection
   filename = STDIN.gets.chomp 
   while filename.empty? || !File.exist?(filename)
@@ -119,8 +116,6 @@ def file_selection
   end
   filename
 end
-
-
 
 def save_students
   puts "Enter the filename you would like to save your list to:"
@@ -132,7 +127,6 @@ def save_students
   end
   puts "#{@students.count} students have been saved to #{filename}"
 end
-
 
 def load_students
   puts "Enter a filename ending with its file type extension (E.g: file.csv)"
@@ -157,6 +151,5 @@ end
 #   end
 # end
 
-# Methods called
 # default_load_students
 interactive_menu
