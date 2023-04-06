@@ -7,23 +7,23 @@ def input_students
   puts "Please enter the name of the students"
   puts "To finish, just hit return twice"
   
-  name = gets.chomp
+  name = STDIN.gets.chomp
   
   while !name.empty? do
     # Added further statements to allow user to input multiple values to new keys in hash
     puts "Which cohort does #{name} belong to?"
     # This loop only allows users to input a month as a :cohort value 
     # This can also be edited for the other Keys in our hash if required
-    cohort = gets.strip.to_sym
+    cohort = STDIN.gets.chomp.to_sym
     until (@acceptable_cohorts.select { |month| month == cohort }.empty?) == false do
       puts "This cohort is invalid"
-      cohort = gets.strip.to_sym
+      cohort = STDIN.gets.chomp.to_sym
     end
     
     puts "What is #{name}s favourite hobby?"
-    hobby = gets.strip.to_sym
+    hobby = STDIN.gets.chomp.to_sym
     puts "Finally, which country is #{name} from?"
-    country = gets.strip.to_sym
+    country = STDIN.gets.chomp.to_sym
     
     @students << {name: name, cohort: cohort, hobby: hobby, cob: country}
     student_count = "Now we have #{@students.count} student"
@@ -34,38 +34,38 @@ def input_students
         puts student_count + "s"
       end
     puts "Add another student or hit enter to finish."
-    name = gets.strip
+    name = STDIN.gets.chomp
   end
 end
   
 # Center method added to outputs in header method  
 def print_header
-  puts "The Students of Villains Academy".center(100)
-  puts "-------------".center(100)
+  puts "The Students of Villains Academy"
+  puts "-------------"
 end
 
 # Control flow added to print method to account for empty arrays
 def print_students_list
   if @students.empty? 
-    puts "There are currrently no students at the Villains Academy".center(100)
+    puts "There are currrently no students at the Villains Academy"
   else
     @students.each do |student| 
-      puts "#{student[:name]} (#{student[:cohort]} cohort)".center(100)
+      puts "#{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
 end
 
 # Print cohort method added to puts all names within selected cohort
 def print_by_cohort
-  puts "select a cohort month from 1-12".center(100)
-  cohort = gets.strip
+  puts "select a cohort month from 1-12"
+  cohort = STDIN.gets.chomp
   while cohort.to_i < 1 || cohort.to_i > 12
-    puts "invalid input".center(100)
-    cohort = gets.strip
+    puts "invalid input"
+    cohort = STDIN.gets.chomp
   end 
   
   @students.each do |hash| 
-    hash.map { |k, v| puts hash[:name].center(100) if @acceptable_cohorts[cohort.to_i - 1] == v }
+    hash.map { |k, v| puts hash[:name] if @acceptable_cohorts[cohort.to_i - 1] == v }
   end
 end
   
@@ -74,11 +74,11 @@ def print_footer
   if @students.count < 1
     puts "Our most evilest(MF the Super Villain) had better start recruiting because we have no students."
   elsif @students.count == 1
-    puts "Overall, we have #{@students.count} great student".center(100)
+    puts "Overall, we have #{@students.count} great student"
   elsif @students.count <= 7
-    puts "Overall, we have #{@students.count} great students".center(100)
+    puts "Overall, we have #{@students.count} great students"
   else 
-    puts "These #{@students.count} are a questional bunch".center(100)
+    puts "These #{@students.count} are a questionable bunch"
   end
 end
 
@@ -91,10 +91,10 @@ def print_menu
   puts "9. Exit"
 end
 
-# I have amended the print_students_list to print_by_cohort below to test the change worked successfully.
+# Amended back
 def show_students
   print_header
-  print_by_cohort
+  print_students_list
   print_footer
 end
 
@@ -118,7 +118,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -135,8 +135,8 @@ def save_students
 end
 
 # Loading the students from existing file
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(",")
     @students << {name: name, cohort: cohort.to_sym}
@@ -144,4 +144,18 @@ def load_students
   file.close
 end
 
+# Loading files from the command line
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil? 
+  if File.exist?(filename)
+    load_students(filename)
+     puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
+
+try_load_students
 interactive_menu
