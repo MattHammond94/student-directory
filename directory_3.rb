@@ -109,27 +109,35 @@ def print_footer
   end
 end
 
+# Method added to define selected file
+def file_selection
+  filename = STDIN.gets.chomp 
+  while filename.empty? || !File.exist?(filename)
+    puts "Filename not acceptable, please re-enter a filename"
+    filename = STDIN.gets.chomp
+  end
+  filename
+end
+
 # Saving our data to a file:
 def save_students
-  file = File.open("students_2.csv", "w")
+  puts "Enter the filename you would like to save your list to:"
+  filename = file_selection
+  file = File.open(filename, "w")
   
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
-  puts "Students have been saved to{"
+  puts "Students have been saved to #{filename}"
   file.close
 end
 
 # Both methods updated to ensure a default file is passed:
 def load_students
   puts "Enter a filename ending with its file type extension (E.g: file.csv)"
-  filename = STDIN.gets.chomp 
-    while filename.empty? || !File.exist?(filename)
-      puts "Filename not acceptable, please re-enter a filename"
-      filename = STDIN.gets.chomp
-    end
+  filename = file_selection
     file = File.open(filename, "r")
       file.readlines.each do |line|
       name, cohort = line.chomp.split(",")
