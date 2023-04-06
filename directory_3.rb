@@ -1,5 +1,6 @@
 # This program is a copy of the directory.rb file upon completion of step 13
 # This codebase will be refactored accordingly to complete the tasks in step 14
+require 'csv'
 @students = []
 @acceptable_cohorts = [:january, :february, :march, :april, :may, :june,
                        :july, :august, :september, :october, :november,
@@ -119,33 +120,33 @@ def file_selection
   filename
 end
 
-# Saving our data to a file:
-def save_students
-  puts "Enter the filename you would like to save your list to:"
-  filename = file_selection
-  file = File.open(filename, "w")
-  
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
-  puts "Students have been saved to #{filename}"
-end
 
-# Both methods updated to ensure a default file is passed:
+
+# def save_students
+#   puts "Enter the filename you would like to save your list to:"
+#   filename = file_selection
+  
+  
+#   CSV.open(filename, "w")
+  
+#   @students.each do |student|
+#     student_data = [student[:name], student[:cohort]]
+#     csv_line = student_data.join(",")
+#     file.puts csv_line
+#   end
+#   puts "Students have been saved to #{filename}"
+# end
+
+
 def load_students
   puts "Enter a filename ending with its file type extension (E.g: file.csv)"
   filename = file_selection
-    file = File.open(filename, "r")
-      file.readlines.each do |line|
-      name, cohort = line.chomp.split(",")
+    CSV.foreach(filename) do |row|
+      name, cohort = row
       add_student(name, cohort.to_sym)
     end
   puts "Successfully loaded #{@students.count} from #{filename}"
 end
-
-
 
 # def default_load_students
 #   filename = ARGV.first
