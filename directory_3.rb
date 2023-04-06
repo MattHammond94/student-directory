@@ -131,7 +131,6 @@ def save_students
     file.puts csv_line
   end
   puts "Students have been saved to #{filename}"
-  file.close
 end
 
 # Both methods updated to ensure a default file is passed:
@@ -144,21 +143,22 @@ def load_students
       add_student(name, cohort.to_sym)
     end
   puts "Successfully loaded #{@students.count} from #{filename}"
-  file.close
 end
 
-def default_load_students
-  filename = ARGV.first
-  if filename.nil? 
-    load_students
-  elsif File.exist?(filename)
-    load_students(filename)
-     puts "Loaded #{@students.count} from #{filename}"
-  else
-    puts "Sorry, #{filename} doesn't exist."
-    exit
-  end
-end
+
+
+# def default_load_students
+#   filename = ARGV.first
+#   if filename.nil? 
+#     load_students
+#   elsif File.exist?(filename)
+#     load_students(filename)
+#     puts "Loaded #{@students.count} from #{filename}"
+#   else
+#     puts "Sorry, #{filename} doesn't exist."
+#     exit
+#   end
+# end
 
 # Methods called
 # default_load_students
