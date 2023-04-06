@@ -8,8 +8,8 @@
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to students_2.csv"
+  puts "4. Load the list from students_2.csv"
   puts "9. Exit"
 end
 
@@ -37,29 +37,37 @@ def process(selection)
   end
 end
 
+# Refactored my input students method into 3 methods:
 def input_students
   puts "Please enter the name of the students"
   puts "To finish, just hit return twice"
-  
   name = STDIN.gets.chomp
   
   while !name.empty? do
     puts "Which cohort does #{name} belong to?"
     cohort = STDIN.gets.chomp.to_sym
-    until @acceptable_cohorts.select { |month| month == cohort }.empty? == false do
-      puts "This cohort is invalid"
-      cohort = STDIN.gets.chomp.to_sym
-    end
+    cohort_acceptability(cohort)
     add_student(name, cohort)
-    student_count = "Now we have #{@students.count} student"
-      if @students.count == 1
-        puts student_count
-      else   
-        puts student_count + "s"
-      end
+    total_students
     puts "Add another student or hit enter to finish."
     name = STDIN.gets.chomp
   end
+end
+
+def cohort_acceptability(cohort)
+  until @acceptable_cohorts.select { |month| month == cohort }.empty? == false do
+    puts "This cohort is invalid"
+    cohort = STDIN.gets.chomp.to_sym
+  end
+end
+
+def total_students
+  student_count = "Now we have #{@students.count} student"
+    if @students.count == 1
+      puts student_count
+    else   
+      puts student_count + "s"
+    end
 end
 
 # Add student method added 
