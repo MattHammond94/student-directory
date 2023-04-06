@@ -122,20 +122,16 @@ end
 
 
 
-# def save_students
-#   puts "Enter the filename you would like to save your list to:"
-#   filename = file_selection
-  
-  
-#   CSV.open(filename, "w")
-  
-#   @students.each do |student|
-#     student_data = [student[:name], student[:cohort]]
-#     csv_line = student_data.join(",")
-#     file.puts csv_line
-#   end
-#   puts "Students have been saved to #{filename}"
-# end
+def save_students
+  puts "Enter the filename you would like to save your list to:"
+  filename = file_selection
+  CSV.open(filename, "w") do |csv|
+    @students.each do |student|
+      csv << [student[:name], student[:cohort]]
+    end
+  end
+  puts "#{@students.count} students have been saved to #{filename}"
+end
 
 
 def load_students
