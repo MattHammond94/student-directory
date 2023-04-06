@@ -10,6 +10,7 @@ def print_menu
   puts "2. Show the students"
   puts "3. Save the list to students_2.csv"
   puts "4. Load the list from students_2.csv"
+  puts "5. Select a file to load the list from"
   puts "9. Exit"
 end
 
@@ -28,13 +29,13 @@ def process(selection)
       show_students
     when "3"
       save_students
-      puts "Students have been saved to "
     when "4"
       load_students
-      puts "Students have been succesffuly loaded from "
+    when "5"
+      load_students_selection
     when "9"
-      exit
       puts "Goodbye!"
+      exit
     else 
       puts "I don't know what you mean, try again"
   end
@@ -120,7 +121,22 @@ def save_students
     csv_line = student_data.join(",")
     file.puts csv_line
   end
+  puts "Students have been saved to #{filename}"
   file.close
+end
+
+# Added new method to take a selected file from user.
+# Can be editted with a Regex to ensure that user input always ends in some form of
+# extension however I have spent too long trying to implement this. 
+# For now works on the assumption a .csv file is stored within dir.
+def load_students_selection
+  puts "Type a filename ending with its file type extension (E.g: file.csv)"
+  filename = gets.chomp 
+  while filename.empty? || !filename.end_with?(".csv")
+    puts "Filename not acceptable, please re enter a filename"
+    filename = gets.chomp
+  end
+  load_students(filename)
 end
 
 # Both methods updated to ensure a default file is passed:
@@ -130,7 +146,7 @@ def load_students(filename = "students_2.csv")
   name, cohort = line.chomp.split(",")
     add_student(name, cohort.to_sym)
   end
-  puts "Loaded #{@students.count} from #{filename}"
+  puts "Successfully loaded #{@students.count} from #{filename}"
   file.close
 end
 
@@ -148,5 +164,5 @@ def default_load_students
 end
 
 # Methods called
-default_load_students
+# default_load_students
 interactive_menu
