@@ -28,10 +28,13 @@ def process(selection)
       show_students
     when "3"
       save_students
+      puts "Students have been saved to "
     when "4"
       load_students
+      puts "Students have been succesffuly loaded from "
     when "9"
       exit
+      puts "Goodbye!"
     else 
       puts "I don't know what you mean, try again"
   end
@@ -120,21 +123,22 @@ def save_students
   file.close
 end
 
-# Loading the students from existing file
+# Both methods updated to ensure a default file is passed:
 def load_students(filename = "students_2.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(",")
     add_student(name, cohort.to_sym)
   end
+  puts "Loaded #{@students.count} from #{filename}"
   file.close
 end
 
-# Loading files from the command line
-def try_load_students
+def default_load_students
   filename = ARGV.first
-  return if filename.nil? 
-  if File.exist?(filename)
+  if filename.nil? 
+    load_students
+  elsif File.exist?(filename)
     load_students(filename)
      puts "Loaded #{@students.count} from #{filename}"
   else
@@ -144,5 +148,5 @@ def try_load_students
 end
 
 # Methods called
-try_load_students
+default_load_students
 interactive_menu
